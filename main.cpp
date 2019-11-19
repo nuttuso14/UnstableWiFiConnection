@@ -88,9 +88,13 @@ int main(int argc, char *argv[]) {
 	cout << "E[tb]="<<avgTb<<endl;	
 	cout << "======= Model 1 Perfect =======" <<endl;
 	double offloadingRatio = avgU1/avgTs;
+	double p1t0 = avgU1/(avgU0+avgU1);
+	cout << "Pr[X(t0)=1]="<< p1t0 <<endl;
 	cout << "Avareage WiFi Offloading Ratio = " << offloadingRatio <<endl;
 	cout << "======= Model 2 Unstatable=======" <<endl;
 	double offloadingGoodRatio = avgTg/avgTs;
+	double p1tg = avgTg/(avgU0+avgU1);
+	cout << "Pr[X(t0)=1]="<< p1tg <<endl;
 	cout << "Avareage WiFi Offloading Ratio = " << offloadingGoodRatio <<endl;
 	cout << "================================" <<endl;
 
