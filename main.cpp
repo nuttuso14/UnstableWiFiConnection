@@ -43,7 +43,28 @@ int getWifiStatus(double p1){
 int main(int argc, char *argv[]) {
 	
 	//double P1 = 0.6;
+
+	if (argc < 7) {
+		cerr << "Usage: " << argv[0] << " <SIM_ROUND> " << " <E[t0]> " << "E[t1]"  	<< " E[TauB]" << " E[TauG]" << " Session_time" << endl;
+		return 1;
+	}
+	
+	/* initial variable */
+	int NSIM = atoi(argv[1]);
+	double mean0=atof(argv[2]);
+	double mean1=atof(argv[3]);
+	double tbad=atof(argv[4]);
+	double tgood=atof(argv[5]);
+	double session_time=atof(argv[6]);
+
 	double t0 =0, t1=0, ts=0, tb=0, tg=0; 
+	double sumTg = 0,sumTb=0;
+	double sumsessiontime=0;
+	int wifiStatus = 0;
+	double sig0= 0, sig1= 0, sigb = 0, sigG = 0;
+	int countP1= 0;
+
+	/*double t0 =0, t1=0, ts=0, tb=0, tg=0; 
 	double mean0= 439, mean1= 1679, session_time =5000;
 	double tgood=500, tbad=150;
 	int NSIM = 10000;
@@ -51,7 +72,7 @@ int main(int argc, char *argv[]) {
 	double sumTg = 0,sumTb=0;
 	int countP1= 0;
 	int wifiStatus = 0;
-	double sig0= 0, sig1= 0, sigb = 0, sigG = 0;
+	double sig0= 0, sig1= 0, sigb = 0, sigG = 0;*/
 
 	double P1 = mean1/(mean1+mean0);
 	double Pg = tgood/(tgood+tbad);
@@ -158,6 +179,14 @@ int main(int argc, char *argv[]) {
 	double avgGoodOffloading_ratio = sumGoodOffloadingRatio/(double)NSIM;
 
 	cout << "======= Report =======" <<endl;
+	cout << "======= Initial Parameters =======" <<endl;
+	cout << "N_SIMULATION =" << NSIM <<"\n";
+	cout << "E[t0]="<<mean0<<endl;
+	cout << "E[t1]="<<mean1<<endl;
+	cout << "E[tg]="<<tgood<<endl;	
+	cout << "E[tb]="<<tbad<<endl;
+	cout << "Session Time ="<<session_time<<endl;
+	cout << "=====================" <<endl;
 	cout << "Initial P1 with  "<< P1 <<endl;
 	cout << "Initial Pg with  "<< Pg <<endl;
 	cout << "E[t0]="<<avgU0<<endl;
@@ -173,26 +202,20 @@ int main(int argc, char *argv[]) {
 	cout << "======= Model 2 Unstatable=======" <<endl;
 	cout << "Offloading Ratio = " << avgGoodOffloading_ratio <<endl;
 	
-	/*
-	cout << "======= Report =======" <<endl;
-	cout << "P[initial P1]="<<popP1<<endl;
-	cout << "E[t0]="<<avgU0<<endl;
-	cout << "E[t1]="<<avgU1<<endl;
-	cout << "E[ts]="<<avgTs<<endl;
-	cout << "E[tg]="<<avgTg<<endl;	
-	cout << "E[tb]="<<avgTb<<endl;	
-	cout << "======= Model 1 Perfect =======" <<endl;
-	double offloadingRatio = avgU1/avgTs;
-	double p1t0 = avgU1/(avgU0+avgU1);
-	cout << "Pr[X(t0)=1]="<< p1t0 <<endl;
-	cout << "Avareage WiFi Offloading Ratio = " << offloadingRatio <<endl;
-	cout << "======= Model 2 Unstatable=======" <<endl;
-	double offloadingGoodRatio = avgTg/avgTs;
-	double p1tg = avgTg/(avgU0+avgU1);
-	cout << "Pr[X(t0)=1]="<< p1tg <<endl;
-	cout << "Avareage WiFi Offloading Ratio = " << offloadingGoodRatio <<endl;
-	cout << "================================" <<endl;
-	*/
+	ofstream outfile;
+    outfile.open("result.txt",ios_base::app);
+
+	string content;
+	content = to_string(NSIM) + "," + to_string(mean0) + "," + to_string(mean1) + "," + to_string(tbad) + "," + to_string(tgood) + "," + to_string(session_time) \
+	          + "," + to_string(P1) + "," + to_string(Pg) + "," + to_string(simP1) + "," + to_string(simPg) \
+			  + "," + to_string(avgOffloading_ratio) + "," + to_string(avgGoodOffloading_ratio); 
+			  
+	outfile << content <<"\n"; 
+
+ 	outfile.close();
+    cout << "Results are written in Text file" <<endl;
+
+
 	return 0;
 }
 
