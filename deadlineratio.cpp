@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip> // setprecision
 #include <vector>
+#include "random.h"
 
 using namespace std;
 
@@ -76,6 +77,8 @@ int main(int argc, char *argv[]) {
     double P1 = mean1/(mean1+mean0);
 	double Pg = tgood/(tgood+tbad);
 
+    Pareto rnd_file_size;
+
     cout << "P1: " << P1 <<endl;
     cout << "Pg: " << Pg <<endl;
 
@@ -85,11 +88,20 @@ int main(int argc, char *argv[]) {
     int wifiStatus = 0;
     int wifiStatus1 = 0;
     
+    cout << "Lawrence Library" << endl;
+
     for(int i=0;i<NSim;i++)
     {
         double ts = td, ts1=td;
         double sumtime = 0;
-        double file_size = GenPareto(shape,xm);
+
+        double pareto_l = xm*(shape-1)/shape;
+        //cout << p_mean_file_size <<endl;
+        //cout << PARETO_SH <<endl;
+        rnd_file_size.SetShape(shape);
+        rnd_file_size.SetLocation(pareto_l);
+        double file_size = (rnd_file_size++)*8; //MB to Mb 
+
         double file_size_model_1 = file_size;
         wifiStatus = getWifiStatus(P1);
         wifiStatus1 = getWifiStatus(P1);
