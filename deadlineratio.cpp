@@ -51,19 +51,28 @@ int getWifiStatus(double p1){
 
 int main(int argc, char *argv[]) {
 
-    //cout << "Hello1" <<endl;
-    int NSim = 10000;
-    double xm = 5000;
-    double shape = 1.8;
-    double sumfilesize = 0; //second
-    double b1 = 5; //Mbps
-    double b2 = 5; //Mbps
-    double bg = 4; //Mbps
-    double bb = 1; //Mbps
+    // input program_name N_sim file_size E[t0] E[t1] E[tb] E[tg] ts b1 b2 bb bg 
 
-    double mean0= 225, mean1= 450, td = 600;
-	double tgood=150, tbad=75;
+    if (argc < 13) {
+		cerr << "Usage: " << argv[0] << " <SIM_ROUND> " << " <File_Size> " << "<SHAPE>" << " <E[t0]> " << "<E[t1]>"  << "<E[TauB]>"  \
+             << "<E[TauG]>" << "<SESSION_TIME>" << "<B1>" << "<B2>" << "<BB>" << "<BG>" << endl;
+		return 1;
+	}
 
+    int NSim = atoi(argv[1]);
+    double xm = atof(argv[2]);
+    double shape = atof(argv[3]);
+    double mean0 = atof(argv[4]);
+    double mean1 = atof(argv[5]);
+    double tbad = atof(argv[6]);
+    double tgood = atof(argv[7]);
+    double td = atof(argv[8]);
+    double b1 = atof(argv[9]);
+    double b2 = atof(argv[10]);
+    double bb = atof(argv[11]);
+    double bg = atof(argv[12]);
+
+    double sumfilesize = 0;
     double P1 = mean1/(mean1+mean0);
 	double Pg = tgood/(tgood+tbad);
 
@@ -313,6 +322,19 @@ int main(int argc, char *argv[]) {
    
 
    cout << "==================== Report ====================" << endl;
+   cout << "==================== Input ====================" << endl;
+   cout << "xm :"<<xm << " MB" << endl;
+   cout << "shape : " << shape << endl;
+   cout <<  "E[t0] = " << mean0 << endl;
+   cout <<  "E[t1] = " << mean1 << endl;
+   cout <<  "E[tauB] = " << tbad << endl;
+   cout <<  "E[tauG] = " << tgood << endl;
+   cout <<  "Deadline Time = " << td << endl;
+   cout <<  "b1 = " << b1 << endl;
+   cout <<  "b2 = " << b2 << endl;
+   cout <<  "bb = " << bb << endl; 
+   cout <<  "bg = " << bg << endl;    
+   cout << "avg. File size: " << avg_fileSize <<endl;
    cout << "==================== Perfect ====================" << endl;
    cout << "Deadline Miss Ratio:"<<deadlineRatio1<<endl;
    cout << "==================== Unstanable ====================" << endl;
