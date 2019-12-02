@@ -352,6 +352,19 @@ int main(int argc, char *argv[]) {
    cout << "==================== Unstanable ====================" << endl;
    cout << "Deadline Miss Ratio:"<<deadlineRatio<<endl;
 
+    ofstream outfile;
+    outfile.open("deadlineRatio.txt",ios_base::app);
+
+	string content;
+
+    content = to_string(NSim) + "," + to_string(xm) + "," + to_string(shape) + "," + to_string(mean0) + "," + to_string(mean1) \
+            + "," + to_string(tbad) + "," + to_string(tgood) + "," + to_string(td) + "," + to_string(b1) + "," + to_string(b2) \
+            + "," + to_string(bb) + "," + to_string(bg) + "," + to_string(deadlineRatio1) +  "," + to_string(deadlineRatio);
+
+    outfile << content <<"\n"; 
+    outfile.close();
+    cout << "Results are written in Text file" <<endl;
+
 	return 0;
 }
 
