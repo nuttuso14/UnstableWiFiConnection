@@ -110,33 +110,40 @@ int main(int argc, char *argv[]) {
         //cout << "Start File size : " << file_size<<endl;
 
             // model 1
-           // cout << "Model 1" << endl;
-           // cout << "Start File size 1 : " << file_size_model_1<<endl;
+            //cout << "Model 1" << endl;
+            //cout << "Start File size 1 : " << file_size_model_1<<endl;
             do{
                 double tl1 = 0;
                 if(!wifiStatus1)
                 {
                     tl1 = file_size_model_1/b1;
                     double t0 = GenExpo(mean0);
-                    ts1 = ts1 - t0;
-                    if(ts1<0)
-                    {
-                        t0 = t0 + ts1; 
-                    }
-                    //cout << "t0:"<<t0;
+                    
 
                     if(tl1>t0){
+                        ts1 = ts1 - t0;
+                        if(ts1<0)
+                        {
+                            t0 = t0 + ts1; 
+                        }
+                        //cout << "t0:"<<t0;
                         double downloaded = t0*b1;
                         file_size_model_1 = file_size_model_1 - (t0*b1);
-                       // cout << "downloaded file size:" << downloaded << endl;
+                        //cout << " downloaded file size:" << downloaded << endl;
                     }
                     else // download finish
-                    {                       
+                    {    
+                        
+                        ts1 = ts1 - tl1;
+                        if(ts1<0)
+                        {
+                            tl1 = tl1 + ts1; 
+                        }   
+                        //cout << "t0 tl:"<<tl1;                
                         if(file_size_model_1>0){
                             double downloaded = tl1*b1;
                             file_size_model_1 = file_size_model_1 - downloaded;
-                          //  cout << " downloaded file size:" << downloaded << endl;
-
+                            //cout << " downloaded file size:" << downloaded << endl;
                         }
                         break;
                     }
@@ -146,27 +153,34 @@ int main(int argc, char *argv[]) {
                 {
                     tl1 = file_size_model_1/(b1+b2);
                     double t1 = GenExpo(mean1);
-                    ts1 -=t1;
-
-                    if(ts1<0)
-                    {
-                        t1 = t1 + ts1; 
-                    }
-                   // cout << "t1:"<<t1;
+                    
+                    
                     if(tl1>t1){
+                        ts1 -=t1;
+                        if(ts1<0)
+                        {
+                            t1 = t1 + ts1; 
+                        }
+                        //cout << "t1:"<<t1;
                         double downloaded = t1*(b1+b2);
                         file_size_model_1 = file_size_model_1 - (t1*(b1+b2));
 
-                       // cout << " downloaded file size:" << downloaded << endl;
+                        //cout << " downloaded file size:" << downloaded << endl;
 
                     }
                     else // download finish
                     {
+                        ts1 -=tl1;
+                        if(ts1<0)
+                        {
+                            tl1 = tl1 + ts1; 
+                        }
+                        //cout << "t1 tl1:"<<tl1;
                         if(file_size_model_1>0)
                         {
                             double downloaded = tl1*(b1+b2);
                             file_size_model_1 = file_size_model_1 - downloaded;
-                           // cout << " downloaded file size:" << downloaded << endl;
+                            //cout << " downloaded file size:" << downloaded << endl;
                         }
                         break;
                     }
@@ -186,32 +200,36 @@ int main(int argc, char *argv[]) {
                 if(!wifiStatus)
                 {
                     tl = file_size/b1;
-                
-
                     double t0 = GenExpo(mean0);
-                    ts = ts - t0;
-                    if(ts<0)
-                    {
-                        t0 = t0 + ts; 
-                    }
-                    //cout << "t0:"<<t0;
+                    
+                    
 
                     if(tl>t0){
+                        ts = ts - t0;
+                        if(ts<0)
+                        {
+                            t0 = t0 + ts; 
+                        }
+                        //cout << "t0:"<<t0;
                         double downloaded = t0*b1;
                         file_size = file_size - (t0*b1);
-                        sumtime +=t0;
-                       // cout << "downloaded file size:" << downloaded << endl;
+                       
+                        //cout << "downloaded file size:" << downloaded << endl;
 
                     }
                     else // download finish
                     {
+                        
+                        ts = ts - tl;
+                        if(ts<0)
+                        {
+                            tl = tl + ts; 
+                        }
+                        //cout << "t0 tl:"<<tl;
                         if(file_size>0){
                             double downloaded = tl*b1;
                             file_size = file_size - downloaded;
-                            sumtime +=tl;
                             //cout << " downloaded file size:" << downloaded << endl;
-
-
                         }
                         break;
                     }
@@ -247,7 +265,7 @@ int main(int argc, char *argv[]) {
                                 //cout << "tb:"<<tb <<endl;
                                 double downloaded = tb*(b1+bb);
                                 file_size = file_size - (tb*(b1+bb));
-                                sumtime +=tb;
+                                
                                 //cout << " downloaded file size:" << downloaded << endl;
                             }
                             else
@@ -263,7 +281,7 @@ int main(int argc, char *argv[]) {
                                     //cout << "tb tl:"<<tl <<endl;
                                     double downloaded = tl*(b1+bb);
                                     file_size = file_size - downloaded;
-                                    sumtime +=tl;
+                                    
                                     //cout << " downloaded file size:" << downloaded << endl;
                                 }
                                 break;
@@ -284,7 +302,7 @@ int main(int argc, char *argv[]) {
                                 //cout << "tg:"<<tg <<endl;
                                 double downloaded = tg*(b1+bg);
                                 file_size = file_size - (tg*(b1+bg));
-                                sumtime +=tg;
+                                
                                 //cout << " downloaded file size:" << downloaded << endl;
                             }
                             else{
@@ -297,7 +315,7 @@ int main(int argc, char *argv[]) {
                                     double downloaded = tl*(b1+bg);
                                     //cout << "tg tl:"<<tl <<endl;
                                     file_size = file_size - downloaded;
-                                    sumtime +=tl;
+                                    
                                     //cout << "  downloaded file size:" << downloaded << endl;
                                 }
                                 break;
@@ -311,13 +329,13 @@ int main(int argc, char *argv[]) {
         }while(file_size>0 && ts>0);
 
        //cout << "File Size1:" << file_size_model_1 << endl;
-       // cout << "File Size:" << file_size << endl;
+       //cout << "File Size:" << file_size << endl;
 
-        if(file_size>0)
+        if((int)file_size>0)
         {
             count_miss++;
         }
-        if(file_size_model_1>0)
+        if((int)file_size_model_1>0)
         {
             count_miss_1++;
         }
