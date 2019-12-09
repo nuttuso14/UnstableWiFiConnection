@@ -30,6 +30,7 @@ int randomState(double list[],int except,int N_list){
     double sump =0;
     int number = 0;
     //cout<<"x:"<<x<<endl;
+    //cout << list[0] <<"," << list[1] <<"," << list[2] <<endl; 
     for(int i=0;i<N_list;i++)
     {
         if(i!=except)
@@ -37,6 +38,9 @@ int randomState(double list[],int except,int N_list){
             sump += list[i];
             if(x<=sump)
             {
+                //cout << "i:" << i <<endl;
+                //cout << "x:" << x <<endl;
+                //cout << "sump:" << sump <<endl;
                 number =i;
                 break;
             }
@@ -50,7 +54,7 @@ int randomState(double list[],int except,int N_list){
 int main(int argc, char *argv[]) {
 
     //cout << "hello" <<endl;
-    int N_sim = 100000;
+    int N_sim = 10000;
 
     double et0 = 50;
     double etw = 200;
@@ -67,9 +71,9 @@ int main(int argc, char *argv[]) {
     */
 
     double lamda0 = 5;
-    double lamdaw = 15;
-    double gamma1 = 20;
-    double gamma2 = 30;
+    double lamdaw = 5;
+    double gamma1 = 8;
+    double gamma2 = 2;
     double mus = 1/ets;
 
 
@@ -101,7 +105,7 @@ int main(int argc, char *argv[]) {
         {lamdaw/(lamdaw+gamma1),0,gamma1/(gamma1+lamdaw)},
         {lamdaw/(lamdaw+gamma2),gamma2/(gamma2+lamdaw),0}
      };   
-
+/*
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ ) {
       
@@ -110,6 +114,29 @@ int main(int argc, char *argv[]) {
       }
 
     int initstate = 0;
+    initstate = randomState(pi,-1,3); // first initial
+    count_state[initstate] =count_state[initstate]+1;
+    for(int n=0;n<N_sim-1;n++)
+    {
+        double sub_space[3] = {state_space[initstate][0],state_space[initstate][1],state_space[initstate][2]};
+        initstate = randomState(sub_space,initstate,3);
+        count_state[initstate] =count_state[initstate]+1;
+        
+    }
+
+    cout << count_state[0] <<endl;
+    cout << count_state[1] <<endl;
+    cout << count_state[2] <<endl;
+
+    double pop1 = (double)count_state[0]/(double)(count_state[0]+count_state[1]+count_state[2]);
+    double pop2 = (double)count_state[1]/(double)(count_state[0]+count_state[1]+count_state[2]);
+    double pop3 = (double)count_state[2]/(double)(count_state[0]+count_state[1]+count_state[2]);
+
+    cout <<"P_0 :" << pop1 <<endl;
+    cout <<"P_1 :" << pop2 <<endl;
+    cout <<"P_2 :" << pop3 <<endl;
+*/
+    /*
     for(int n=0;n<N_sim;n++)
     {
         initstate = randomState(pi,-1,3);
@@ -189,7 +216,7 @@ int main(int argc, char *argv[]) {
     cout <<"P_0 :" << pop1 <<endl;
     cout <<"P_1 :" << pop2 <<endl;
     cout <<"P_2 :" << pop3 <<endl;
-    
+    */
 
     /*
      for ( int i = 0; i < 3; i++ )
@@ -198,26 +225,28 @@ int main(int argc, char *argv[]) {
          cout << "P[" << i << "][" << j << "]: ";
          cout << state_space[i][j]<< endl;
       }
-    
-    int count_state2[] = {0,0,0};
-    int initstate1 = 0;
+    */
+
+   
+    //int count_state[] = {0,0,0};
+    int initstate = 0;
     for(int i=0;i<N_sim;i++)
     {
-        initstate1 = randomState(pi,-1,3);
-        count_state2[initstate1]+=1;
+        initstate = randomState(pi,-1,3);
+        count_state[initstate]+=1;
     }
    
-    cout <<"count_state 0 :" << count_state2[0] <<endl;
-    cout <<"count_state 1 :" << count_state2[1] <<endl;
-    cout <<"count_state 2 :" << count_state2[2] <<endl;
+    cout <<"count_state 0 :" << count_state[0] <<endl;
+    cout <<"count_state 1 :" << count_state[1] <<endl;
+    cout <<"count_state 2 :" << count_state[2] <<endl;
 
-    double pop11 = (double)count_state2[0]/(double)N_sim;
-    double pop21 = (double)count_state2[1]/(double)N_sim;
-    double pop31 = (double)count_state2[2]/(double)N_sim;
+    double pop11 = (double)count_state[0]/(double)N_sim;
+    double pop21 = (double)count_state[1]/(double)N_sim;
+    double pop31 = (double)count_state[2]/(double)N_sim;
 
     cout <<"P_0 :" << pop11 <<endl;
     cout <<"P_1 :" << pop21 <<endl;
     cout <<"P_2 :" << pop31 <<endl;
-    */
+    
     return 0;
 }
