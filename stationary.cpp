@@ -7,8 +7,13 @@
 #include <sstream>
 #include <iomanip> // setprecision
 #include <vector>
+#include <random>
 
 using namespace std;
+
+default_random_engine eng{static_cast<long unsigned int>(time(0))};
+uniform_real_distribution<double> distribution(0.0,1.0);
+
 
 double randomNumber(){
 	double r = 0;
@@ -20,13 +25,15 @@ double randomNumber(){
 
 double GenExpo(double u){
 	//double u = ((double)1/mean); 
-	return (-(double)1/u)*log(randomNumber());
+    double randomNum = distribution(eng);
+    //cout << "ran:"<<randomNum <<endl;
+	return (-(double)1/u)*log(randomNum);
 }
 
 
 int randomState(double list[],int except,int N_list){
-    
-    double x = randomNumber();
+    double x = distribution(eng);
+    //double x = randomNumber();
     double sump =0;
     int number = 0;
     //cout<<"x:"<<x<<endl;
@@ -54,7 +61,7 @@ int randomState(double list[],int except,int N_list){
 int main(int argc, char *argv[]) {
 
     //cout << "hello" <<endl;
-    int N_sim = 10000;
+    int N_sim = 50000;
 
     double et0 = 50;
     double etw = 200;
@@ -70,10 +77,10 @@ int main(int argc, char *argv[]) {
     double mus = 1/ets;
     */
 
-    double lamda0 = 5;
-    double lamdaw = 5;
-    double gamma1 = 8;
-    double gamma2 = 2;
+    double lamda0 = 1.5;
+    double lamdaw = 8.5;
+    double gamma1 = 9.5;
+    double gamma2 = 0.5;
     double mus = 1/ets;
 
 
@@ -105,7 +112,7 @@ int main(int argc, char *argv[]) {
         {lamdaw/(lamdaw+gamma1),0,gamma1/(gamma1+lamdaw)},
         {lamdaw/(lamdaw+gamma2),gamma2/(gamma2+lamdaw),0}
      };   
-/*
+
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ ) {
       
@@ -135,7 +142,7 @@ int main(int argc, char *argv[]) {
     cout <<"P_0 :" << pop1 <<endl;
     cout <<"P_1 :" << pop2 <<endl;
     cout <<"P_2 :" << pop3 <<endl;
-*/
+
     /*
     for(int n=0;n<N_sim;n++)
     {
@@ -228,21 +235,21 @@ int main(int argc, char *argv[]) {
     */
 
    
-    //int count_state[] = {0,0,0};
-    int initstate = 0;
+    int count_state2[] = {0,0,0};
+    int initstate1 = 0;
     for(int i=0;i<N_sim;i++)
     {
-        initstate = randomState(pi,-1,3);
-        count_state[initstate]+=1;
+        initstate1 = randomState(pi,-1,3);
+        count_state2[initstate1]+=1;
     }
    
-    cout <<"count_state 0 :" << count_state[0] <<endl;
-    cout <<"count_state 1 :" << count_state[1] <<endl;
-    cout <<"count_state 2 :" << count_state[2] <<endl;
+    cout <<"count_state 0 :" << count_state2[0] <<endl;
+    cout <<"count_state 1 :" << count_state2[1] <<endl;
+    cout <<"count_state 2 :" << count_state2[2] <<endl;
 
-    double pop11 = (double)count_state[0]/(double)N_sim;
-    double pop21 = (double)count_state[1]/(double)N_sim;
-    double pop31 = (double)count_state[2]/(double)N_sim;
+    double pop11 = (double)count_state2[0]/(double)N_sim;
+    double pop21 = (double)count_state2[1]/(double)N_sim;
+    double pop31 = (double)count_state2[2]/(double)N_sim;
 
     cout <<"P_0 :" << pop11 <<endl;
     cout <<"P_1 :" << pop21 <<endl;
