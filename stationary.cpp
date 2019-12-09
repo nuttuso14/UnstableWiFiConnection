@@ -77,10 +77,10 @@ int main(int argc, char *argv[]) {
     double mus = 1/ets;
     */
 
-    double lamda0 = 1.5;
-    double lamdaw = 8.5;
-    double gamma1 = 9.5;
-    double gamma2 = 0.5;
+    double lamda0 = 5;
+    double lamdaw = 5;
+    double gamma1 = 6;
+    double gamma2 = 4;
     double mus = 1/ets;
 
 
