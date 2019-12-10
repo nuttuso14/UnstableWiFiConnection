@@ -61,7 +61,7 @@ int randomState(double list[],int except,int N_list){
 int main(int argc, char *argv[]) {
 
     //cout << "hello" <<endl;
-    int N_sim = 50000;
+    int N_sim = 10000;
 
     double et0 = 50;
     double etw = 200;
@@ -77,10 +77,10 @@ int main(int argc, char *argv[]) {
     double mus = 1/ets;
     */
 
-    double lamda0 = 1.5;
-    double lamdaw = 8.5;
-    double gamma1 = 2.75;
-    double gamma2 = 7.25;
+    double lamda0 = 6;
+    double lamdaw = 7;
+    double gamma1 = 3;
+    double gamma2 = 4;
     double mus = 1/ets;
 
 
