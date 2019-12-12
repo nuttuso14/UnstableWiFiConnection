@@ -61,7 +61,7 @@ int randomState(double list[],int except,int N_list){
 int main(int argc, char *argv[]) {
 
     //cout << "hello" <<endl;
-    int N_sim = 10000;
+    int N_sim = 100000;
 
     double et0 = 50;
     double etw = 200;
@@ -77,10 +77,10 @@ int main(int argc, char *argv[]) {
     double mus = 1/ets;
     */
 
-    double lamda0 = 6;
-    double lamdaw = 7;
-    double gamma1 = 3;
-    double gamma2 = 4;
+    double lamda0 = 5;
+    double lamdaw = 5;
+    double gamma1 = 5;
+    double gamma2 = 5;
     double mus = 1/ets;
 
 
@@ -89,12 +89,18 @@ int main(int argc, char *argv[]) {
     double p2 = gamma1/(gamma1+gamma2);
 
     // stationary probability
-    double pi0 = lamdaw/(1 + lamda0 + lamdaw);
-    double b = lamda0/(gamma1 + gamma2);
-    double c = 1+ lamdaw + gamma1 + gamma2;
+   // double pi0 = lamdaw/(1 + lamda0 + lamdaw);
+   // double b = lamda0/(gamma1 + gamma2);
+    //double c = 1+ lamdaw + gamma1 + gamma2;
 
-    double pi1 = (((c-gamma1)/c)*(1+(pi0*(b-1))))-(pi0*b);
+  /*  double pi1 = (((c-gamma1)/c)*(1+(pi0*(b-1))))-(pi0*b);
     double pi2 = (gamma1/c)*(1+(pi0*(b-1)));
+    double sumpi = pi0 + pi1 + pi2;*/
+
+    double a = lamda0/(lamda0 + lamdaw);
+    double pi0 = lamdaw/(lamda0 + lamdaw);
+    double pi1 = a*p1;
+    double pi2 = a*p2;
     double sumpi = pi0 + pi1 + pi2;
 
     cout << "pi0 =" <<pi0 <<endl;

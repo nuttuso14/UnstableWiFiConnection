@@ -7,9 +7,13 @@
 #include <sstream>
 #include <iomanip> // setprecision
 #include <vector>
-#include "random.h"
+//#include "random.h"
+#include <random>
 
 using namespace std;
+
+default_random_engine eng{static_cast<long unsigned int>(time(0))};
+uniform_real_distribution<double> distribution(0.0,1.0);
 
 double randomNumber(){
 
@@ -21,24 +25,28 @@ double randomNumber(){
 }
 
 double GenExpo(double mean){
+
+    double randomNum = distribution(eng);
 	double u = ((double)1/mean); 
-	return (-(double)1/u)*log(randomNumber());
+	return (-(double)1/u)*log(randomNum);
 }
 
 double GenPareto(double shape ,double xm){
 
+    double randomNum = distribution(eng);
     double pareto_l = xm*(shape-1)/shape;
 
 	//double u = ((double)1/mean); 
 	//return (-(double)1/u)*log(randomNumber());
-    return (pareto_l/(pow(1-randomNumber(),1/shape)));
+    return (pareto_l/(pow(1-randomNum,1/shape)));
 }
 
 int getWifiStatus(double p1){
 
+    double randomNum = distribution(eng);
 	double r = 0;
 	int wifistatus = 0;
-	r = randomNumber();
+	r = randomNum;
 	
 	if(r>=(1-p1))
 	{
@@ -77,7 +85,7 @@ int main(int argc, char *argv[]) {
     double P1 = mean1/(mean1+mean0);
 	double Pg = tgood/(tgood+tbad);
 
-    Pareto rnd_file_size;
+    //Pareto rnd_file_size;
 
     cout << "P1: " << P1 <<endl;
     cout << "Pg: " << Pg <<endl;
@@ -95,17 +103,18 @@ int main(int argc, char *argv[]) {
         double ts = td, ts1=td;
         double sumtime = 0;
 
-        double pareto_l = xm*(shape-1)/shape;
+        //double pareto_l = xm*(shape-1)/shape;
         //cout << p_mean_file_size <<endl;
         //cout << PARETO_SH <<endl;
-        rnd_file_size.SetShape(shape);
-        rnd_file_size.SetLocation(pareto_l);
-        double file_size = (rnd_file_size++)*8; //MB to Mb 
+      //  rnd_file_size.SetShape(shape);
+       // rnd_file_size.SetLocation(pareto_l);
+        double f_size = GenPareto(shape,xm);
+        double file_size = (f_size)*8; //MB to Mb 
 
         double file_size_model_1 = file_size;
         wifiStatus = getWifiStatus(P1);
         wifiStatus1 = getWifiStatus(P1);
-        sumfilesize+=file_size;
+        sumfilesize+=f_size;
 
         //cout << "Start File size : " << file_size<<endl;
 
