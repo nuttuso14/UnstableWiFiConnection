@@ -3,6 +3,7 @@
         "iostream": "cpp",
         "ostream": "cpp",
         "cstdio": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "random": "cpp"
     }
 }
