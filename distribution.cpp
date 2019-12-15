@@ -19,6 +19,7 @@ uniform_real_distribution<double> distribution(0.0,1.0);
 double GenExpo(double mean){
 
     double randomNum = distribution(eng);
+    //cout <<"rr: " <<randomNum << endl;
 	double u = ((double)1/mean); 
 	return (-(double)1/u)*log(randomNum);
 }
@@ -26,6 +27,7 @@ double GenExpo(double mean){
 int getWifiStatus(double p1){
 
     double randomNum = distribution(eng);
+    
 	double r = 0;
 	int wifistatus = 0;
 	r = randomNum;
@@ -43,8 +45,8 @@ int main(int argc, char *argv[])
 {
     
     int Nsim = 100000;
-    double ets = 300;
-    double et0 = 10;
+    double ets = 500;
+    double et0 = 50;
     double et1 = 150;
 
     double mus = 1/ets;
@@ -64,7 +66,9 @@ int main(int argc, char *argv[])
 
     // do simulation
     double wifistatus = 0;
+    double use_laststatus = 0;
     wifistatus = getWifiStatus(p1);
+    double tnext = -1;
     for(int i=0;i<Nsim;i++)
     {
         //cout << "round " << (i+1) <<endl;
@@ -73,34 +77,74 @@ int main(int argc, char *argv[])
         //cout << "===============================" << (i+1) <<endl;
         int wificount = 0;
         
+        
         do
         {
             if(!wifistatus)
             {
-                int t0 = GenExpo(et0);
+                double t0 = 0;
+                if(use_laststatus)
+                {
+                    t0 = tnext;
+                }
+                else
+                {
+                    t0 = GenExpo(et0);
+                }
                 //cout << "t0:"<<t0 <<endl;
                 tsi -=t0;
-                wifistatus =1;
+                if(tsi<0)
+                {
+                    tnext = tsi*(-1);
+                    use_laststatus = 1;
+                    //cout << "tnext :" << tnext <<endl;
+                }
+                else
+                { // wifistage changed
+                    wifistatus =1;
+                    use_laststatus = 0;
+                }
+                
             }
             else
             {
-                int t1 = GenExpo(et1);
-                //cout << "t1:"<<t1 <<endl;
+                double t1 =0;
+                if(use_laststatus)
+                {
+                    t1 = tnext;
+                }
+                else
+                {
+                    t1 = GenExpo(et1);
+                }
+               // cout << "t1:"<<t1 <<endl;
                 tsi -=t1;
-                wifistatus =0;
+                if(tsi<0)
+                {
+                     tnext = tsi*(-1);
+                     use_laststatus = 1;
+                 //    cout << "tnext :" << tnext <<endl;
+                }
+                else // wifistage changed
+                {
+                    wifistatus =0;
+                    use_laststatus = 0;
+                }
                 wificount++;
             }
         }while(tsi>0);
-        //cout << "WiFi count:" << wificount<<endl;
-        //cout << "===============================" << (i+1) <<endl;
+       // cout << "WiFi count:" << wificount<<endl;
+       // cout << "===============================" << (i+1) <<endl;
         if(countP.find(wificount)==countP.end()) // if there is no P[N=n]
         {
             countP.insert(make_pair(wificount,1));
+            //cout << "C["<<wificount<<"]="<<countP[wificount]<<endl;
         }
         else
         {
             int wcount = countP[wificount];
             countP[wificount] = wcount+1;
+            //cout << "C["<<wificount<<"]="<<countP[wificount]<<endl;
         }
         
     }
@@ -113,24 +157,40 @@ int main(int argc, char *argv[])
 
     cout << "=========== Simulation ==============" << endl;
     for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) { 
-        cout << "P(" << it->first <<") =" << (it->second)/Nsim << endl;
+        cout << fixed;
+        cout << "P(" << it->first <<") ="<< setprecision(8) << (it->second)/Nsim << endl;
     }
+    double summ =0;
     cout << "=========== Math ==============" << endl;
     for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) {
-        double n = it->first;
+        int n = it->first;
         double F1 = lamdaw/(lamdaw+mus);
-        double F0 = mus/(lamda0+mus);
+        double F0 = lamda0/(lamda0+mus);
         double c1 = mus/(mus+lamdaw);
         double c0 = lamda0/(lamda0+mus);
-        double P1 =(pow(F1*F0,n-1)*c1)*p1;
-        double P2 =(pow(F1,n)*pow(F0,n-1)*c0)*p1;
-        double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*c1;
-        double P4 =((1-p1)*(pow(F1*F0,n))*c0);
-        double p = P1+P2+P3+P4;
-        cout << "P1:"<< P1 <<"," <<"P2:"<<P2 << "," << "P3:" << P3<< "," << "P4:"<<P4 <<endl;
-        cout << "P(" << n <<") =" << p << endl;
+        double P1 =(pow(F1*F0,n-1)*(1-F1))*p1;
+        double P2 =(pow(F1,n)*pow(F0,n-1)*(1-F0))*p1;
+        double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
+        double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
+        double p = 0;
 
+        if(n==0)
+        {
+            P4 = (1-p1)*(1-F0);
+            p = P4;
+        }
+        else{
+            p = P1+P2+P3+P4; 
+        }
+
+        //cout << "P1:"<< P1 <<"," <<"P2:"<<P2 << "," << "P3:" << P3<< "," << "P4:"<<P4 <<endl;
+        
+        cout << "P(" << n <<") =";
+        cout << p << setprecision(8) << endl;
+        //cout << "P(" << n <<") =" << p << endl;
+        summ +=p;
     }
+    cout << "sum :" << summ <<endl;
 
 
     /*
