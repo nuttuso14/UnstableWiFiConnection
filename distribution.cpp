@@ -44,7 +44,7 @@ int getWifiStatus(double p1){
 int main(int argc, char *argv[]) 
 {
     
-    int Nsim = 100000;
+    int Nsim = 10000;
     double ets = 500;
     double et0 = 50;
     double et1 = 150;
@@ -155,6 +155,7 @@ int main(int argc, char *argv[])
     }
     */
 
+   /*
     cout << "=========== Simulation ==============" << endl;
     for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) { 
         cout << fixed;
@@ -191,6 +192,53 @@ int main(int argc, char *argv[])
         summ +=p;
     }
     cout << "sum :" << summ <<endl;
+    */
+
+    ofstream outfile;
+    outfile.open("distribution.txt",ios_base::app);
+    string content;
+
+    cout << "=========== Report ==============" << endl;
+    cout <<setw(5) << "P[N=n]| " <<setw(15)<<" Simulation |" << setw(15) << " Math Analyisis |" <<endl;
+    double summ =0;
+
+    for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
+    {
+        int n = it->first;
+        double F1 = lamdaw/(lamdaw+mus);
+        double F0 = lamda0/(lamda0+mus);
+        double c1 = mus/(mus+lamdaw);
+        double c0 = lamda0/(lamda0+mus);
+        double P1 =(pow(F1*F0,n-1)*(1-F1))*p1;
+        double P2 =(pow(F1,n)*pow(F0,n-1)*(1-F0))*p1;
+        double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
+        double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
+        double p = 0;
+
+        if(n==0)
+        {
+            p = P4;
+        }
+        else{
+            p = P1+P2+P3+P4; 
+        }
+        cout << fixed;
+        string col1 = "P[" + to_string(n) + "]";
+        double psim = (it->second)/Nsim;
+        cout << setw(5) <<left << col1 << setprecision(6) << setw(15)<< right  << psim << setw(15) << setprecision(6)<< right << p <<endl;
+        summ +=p;
+
+        content += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0) + "," + to_string(et1) + ","+ to_string(n) \
+                  + "," +  to_string(psim) + "," +  to_string(p) + "\n";
+    }
+    cout << "psum:"<< summ <<endl;
+
+	outfile << content <<"\n"; 
+ 	outfile.close();
+    cout << "Distribution are written in Text file" <<endl;
+
+
+    // Print Report
 
 
     /*
