@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     double mus = 1/ets;
     double lamda0 = 1/et0; 
     double lamdaw = 1/et1;
-    int count_p[Nsim] ={0}; 
+
 
     double ts[Nsim];
     map<int, double> countP; 
