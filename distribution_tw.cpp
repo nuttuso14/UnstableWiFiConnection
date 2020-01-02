@@ -49,14 +49,27 @@ int getWifiStatus(double p[],int size){
 
 int main(int argc, char *argv[]) 
 {
-    
-    int Nsim = 100000;
+    /*
+     if (argc < 7) {
+		cerr << "Usage: " << argv[0] << " <SIM_ROUND> " << " <E[t0]> " << "E[tw]" << " <E[tau1]> " << " <E[tau2]> "  << " <E[Session_time]> " << endl;
+		return 1;
+	}*/
+
+    int Nsim = 10000;
     double ets = 500;
     double et0 = 50;
     double et1 = 70;
     double et2 = 100;
     double etw = 200;
 
+    /*
+    int Nsim = atoi(argv[1]);
+    double et0 = atof(argv[2]);
+    double etw = atof(argv[3]);
+    double et1 = atof(argv[4]);
+    double et2 = atof(argv[5]);
+    double ets = atof(argv[6]);*/
+    
     double mus = 1/ets;
     double lamda0 = 1/et0; 
     double gamma1 = 1/et1;
@@ -78,6 +91,8 @@ int main(int argc, char *argv[])
     }
 
     // do simulation
+
+    
     int wifistatus = 0;
     double use_laststatus = 0;
     wifistatus = getWifiStatus(plist,3);
@@ -251,25 +266,25 @@ int main(int argc, char *argv[])
   
         }while(tsi>0);
     }
+
+    
     cout << "============ Report ============" <<endl;
+    cout << "N_simulation = " <<Nsim << endl;
+    cout << "E[t0] = "<< et0 << endl;
+    cout << "E[tw] = "<< etw << endl;
+    cout << "E[tau1] = "<< et1 << endl;
+    cout << "E[tau2] = "<< et2 << endl;
+    cout << "E[ts] = "<< ets << endl;
     cout << "Total State 1 :" << countT1 << endl;
     cout << "Total State 2 :" << countT2 << endl;
     cout << "========= State 1 ==============" <<endl;
-    /*int n_sum = 0;
-    for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
-    {
-        int n = it->first;
-        n_sum+=(it->second);
-        //cout << "P[N="<<n<<"]="<<(it->second)<<endl;
-    }*/
-    //cout << "n_sum:"<<n_sum<<endl;
-   /* for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
-    {
-        int n = it->first;
-        //cout << "P[N="<<n<<"]="<<(it->second)/(double)countT1<<endl;
-    }*/
-
+  \
     double summ =0;
+    ofstream outfile;
+    outfile.open("distribution_t1.txt",ios_base::app);
+
+	string content;
+
     cout <<setw(5) << "P[N=n]| " <<setw(15)<<" Simulation |" << setw(15) << " Math Analyisis |" <<endl;
     for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
     {
@@ -297,26 +312,21 @@ int main(int argc, char *argv[])
         cout << setw(5) <<left << col1 << setprecision(4) << setw(15)<< right  << psim << setw(15) << setprecision(4)<< right << p <<endl;
         summ +=p;
 
-        /*content += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0) + "," + to_string(et1) + ","+ to_string(n) \
-                  + "," +  to_string(psim) + "," +  to_string(p) + "\n";*/
+        content += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0)+ "," + to_string(etw) + "," + to_string(et1) + "," + to_string(et2)  + ","+ to_string(n) \
+                  + "," +  to_string(psim) + "," +  to_string(p) + "\n";
 
     }
     cout << "psum:"<< summ <<endl;
+    outfile << content <<"\n"; 
+    outfile.close();
+    cout << "Results of tau1 are written in Text file" <<endl;
 
     cout << "========= State 2 ==============" <<endl;
-    /*int n_sum2 = 0;
-    for (map<int, double>::iterator it = countP2.begin(); it != countP2.end(); ++it) 
-    {
-        int n = it->first;
-        n_sum2+=(it->second);
-       // cout << "P[N="<<n<<"]="<<(it->second)<<endl;
-    }
-    cout << "n_sum2:"<<n_sum2<<endl;*/
-    /*for (map<int, double>::iterator it = countP2.begin(); it != countP2.end(); ++it) 
-    {
-        int n = it->first;
-        cout << "P[N="<<n<<"]="<<(it->second)/(double)countT2<<endl;
-    }*/
+
+    ofstream outfile2;
+    outfile2.open("distribution_t2.txt",ios_base::app);
+
+	string content2;
     double summ2 =0;
     cout <<setw(5) << "P[N=n]| " <<setw(15)<<" Simulation |" << setw(15) << " Math Analyisis |" <<endl;
      for (map<int, double>::iterator it = countP2.begin(); it != countP2.end(); ++it) 
@@ -345,12 +355,14 @@ int main(int argc, char *argv[])
         cout << setw(5) <<left << col1 << setprecision(4) << setw(15)<< right  << psim << setw(15) << setprecision(4)<< right << p <<endl;
         summ2 +=p;
 
-        /*content += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0) + "," + to_string(et1) + ","+ to_string(n) \
-                  + "," +  to_string(psim) + "," +  to_string(p) + "\n";*/
+        content2 += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0)+ "," + to_string(etw) + "," + to_string(et1)+ "," + to_string(et2) + ","+ to_string(n) \
+                  + "," +  to_string(psim) + "," +  to_string(p) + "\n";
 
     }
     cout << "psum:"<< summ2 <<endl;
-    
+    outfile2 << content2 <<"\n"; 
+    outfile2.close();
+    cout << "Results of tau2 are written in Text file" <<endl;
 
     return 0;
 
