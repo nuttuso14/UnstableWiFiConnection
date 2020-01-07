@@ -44,7 +44,7 @@ int getWifiStatus(double p1){
 int main(int argc, char *argv[]) 
 {
     
-    int Nsim = 10000;
+    int Nsim = 1000;
     double ets = 500;
     double et0 = 50;
     double et1 = 150;
@@ -214,7 +214,10 @@ int main(int argc, char *argv[])
         double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
         double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
         double p = 0;
-
+        cout << "P1:" << P1 <<endl;
+        cout << "P2:" << P2 <<endl;
+        cout << "P3:" << P3 <<endl;
+        cout << "P4:" << P4 <<endl;
         if(n==0)
         {
             p = P4;
