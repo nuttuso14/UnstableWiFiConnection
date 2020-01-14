@@ -3,7 +3,7 @@ CFLAGS = -g -c
 STANDARD = -std=c++11
 
 
-all: main deadlineratio  stationary
+all: main deadlineratio stationary download
 
 main:  main.o
 	$(CC) -o $@ $? 
@@ -21,7 +21,13 @@ stationary: stationary.o
 	$(CC) -o $@ $? 	
 
 stationary.o: stationary.cpp
-	$(CC) $(STANDARD) $(CFLAGS) -o $@ stationary.cpp 	
+	$(CC) $(STANDARD) $(CFLAGS) -o $@ stationary.cpp 
+
+download: download.o
+	$(CC) -o $@ $? 	
+
+download.o: download.cpp
+	$(CC) $(STANDARD) $(CFLAGS) -o $@ download.cpp 		
 
 main.o:	main.cpp
 	$(CC) $(STANDARD) $(CFLAGS) -o $@ main.cpp 
@@ -35,5 +41,5 @@ random.o: random.cc
 	$(CC) $(CFLAGS) -o $@ random.cc 
 	
 clean:
-	rm *.o *.txt main  main deadlineratio
+	rm *.o *.txt main  main deadlineratio stationary download
 
