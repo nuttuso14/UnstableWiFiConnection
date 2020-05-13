@@ -3,13 +3,19 @@ CFLAGS = -g -c
 STANDARD = -std=c++11
 
 
-all: main deadlineratio stationary download
+all: main deadlineratio stationary download cdf
 
 main:  main.o
 	$(CC) -o $@ $? 
 
 #deadlineratio: deadlineratio.o random.o
 #	$(CC) -o $@ $? 
+
+cdf: cdf.o
+	$(CC) -o $@ $? 
+
+cdf.o: cdf.cpp
+	$(CC) $(STANDARD) $(CFLAGS) -o $@ cdf.cpp 
 
 deadlineratio: deadlineratio.o
 	$(CC) -o $@ $? 
@@ -41,5 +47,5 @@ random.o: random.cc
 	$(CC) $(CFLAGS) -o $@ random.cc 
 	
 clean:
-	rm *.o *.txt main  main deadlineratio stationary download
+	rm *.o *.txt main  main deadlineratio stationary download cdf
 
