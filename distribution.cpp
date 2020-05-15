@@ -207,12 +207,20 @@ int main(int argc, char *argv[])
         int n = it->first;
         double F1 = lamdaw/(lamdaw+mus);
         double F0 = lamda0/(lamda0+mus);
-        double c1 = mus/(mus+lamdaw);
-        double c0 = lamda0/(lamda0+mus);
-        double P1 =(pow(F1*F0,n-1)*(1-F1))*p1;
-        double P2 =(pow(F1,n)*pow(F0,n-1)*(1-F0))*p1;
-        double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
-        double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
+
+       // double P1 =(pow(F1*F0,n-1)*(1-F1))*p1;
+       // double P2 =(pow(F1,n)*pow(F0,n-1)*(1-F0))*p1;
+       // double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
+      //  double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
+      double c0 = lamda0/(lamda0+lamdaw);
+      double c0c = lamdaw/(lamda0+lamdaw);
+      double bigc = (lamda0*lamdaw)/((lamdaw+mus)*(lamda0+mus));
+      double c1c = mus/(mus+lamdaw);
+      double c10 = mus/(mus+lamda0);
+      double P1 = (c0)*(pow(bigc,n-1))*c1c;
+      double P2 = (c0)*(pow(F1,n))*(pow(F0,n-1))*c10;
+      double P3 = (c0c)*(pow(F0,n))*(pow(F1,n-1))*c1c;
+      double P4 = (c0c)*(pow(bigc,n))*c10;
         double p = 0;
        // cout << "P1:" << P1 <<endl;
        // cout << "P2:" << P2 <<endl;

@@ -55,17 +55,17 @@ long double findfactorial(int n)
 int main(int argc, char *argv[]) 
 {
     
-    /*int Nsim = 50000;
+    int Nsim = 50000;
     int N_count = 0;
-    double ets = 500;
+    double ets = 600;
     double et0 = 50;
-    double et1 = 150;
+    double et1 = 100;
 
     double mus = 1/ets;
     double lamda0 = 1/et0; 
     double lamdaw = 1/et1;
-    double distrition_time = 2500; */
-
+    double distrition_time = 2400; 
+/*
     if (argc < 6) {
 		cerr << "Usage: " << argv[0] << " <SIM_ROUND> " << " <E[ts]> " << "E[T0]" << " <E[Tc]> " << " Distrition_time " << endl;
 		return 1;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 
     double mus = 1/ets;
     double lamda0 = 1/et0; 
-    double lamdaw = 1/et1;
+    double lamdaw = 1/et1;*/
     
 
     double ts[Nsim];
@@ -188,7 +188,14 @@ int main(int argc, char *argv[])
 
     }
 
-
+    int n=0;
+    for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
+    {
+         n=it->first;
+         cout << "Help me n:" << n <<":"<<countP[n]<<endl;
+    }
+    n=60;
+    cout << "n:" << n << endl;
     cout << "================= Report =================" <<endl;
     cout << "=== Simulation ===" <<endl;
     double p_tw = (double)N_count/(double)Nsim;
@@ -196,7 +203,26 @@ int main(int argc, char *argv[])
     //cout << "fac(0)=" << findfactorial(0) << endl;
     
     cout << "=== Math Analysis ===" <<endl;
+   // int n = 3;
     
+    map<int, double> recordP; 
+    for(int i=0;i<=n;i++)
+    {
+        double F1 = lamdaw/(lamdaw+mus);
+        double F0 = lamda0/(lamda0+mus);
+        double c1 = mus/(mus+lamdaw);
+        double c0 = lamda0/(lamda0+mus);
+        double P1 =(pow(F1*F0,i-1)*(1-F1))*p1;
+        double P2 =(pow(F1,i)*pow(F0,i-1)*(1-F0))*p1;
+        double P3 =((1-p1)*pow(F0,i))*pow(F1,i-1)*((1-F1));
+        double P4 =((1-p1)*(pow(F1*F0,i))*((1-F0)));
+        double p = 0;
+        p = P1+P2+P3+P4; 
+        recordP.insert(make_pair(i,p));
+        //cout <<"n:"<< i << ":" << p << endl;
+    }
+
+    /*
     double summ =0;
     map<int, double> recordP; 
     int lastN = 0;
@@ -208,26 +234,62 @@ int main(int argc, char *argv[])
 
         if(n>0)
         {
-            double F1 = lamdaw/(lamdaw+mus);
+            /*double F1 = lamdaw/(lamdaw+mus);
             double F0 = lamda0/(lamda0+mus);
             double c1 = mus/(mus+lamdaw);
             double c0 = lamda0/(lamda0+mus);
             double P1 =(pow(F1*F0,n-1)*(1-F1))*p1;
             double P2 =(pow(F1,n)*pow(F0,n-1)*(1-F0))*p1;
             double P3 =((1-p1)*pow(F0,n))*pow(F1,n-1)*((1-F1));
-            double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));
+            double P4 =((1-p1)*(pow(F1*F0,n))*((1-F0)));*/
+      /*      double F1 = lamdaw/(lamdaw+mus);
+            double F0 = lamda0/(lamda0+mus);
+            double c0 = lamda0/(lamda0+lamdaw);
+            double c0c = lamdaw/(lamda0+lamdaw);
+            double bigc = (lamda0*lamdaw)/((lamdaw+mus)*(lamda0+mus));
+            double c1c = mus/(mus+lamdaw);
+            double c10 = mus/(mus+lamda0);
+            double P1 = (c0)*(pow(bigc,n-1))*c1c;
+            double P2 = (c0)*(pow(F1,n))*(pow(F0,n-1))*c10;
+            double P3 = (c0c)*(pow(F0,n))*(pow(F1,n-1))*c1c;
+            double P4 = (c0c)*(pow(bigc,n))*c10;
             double p = 0;
             p = P1+P2+P3+P4; 
             recordP.insert(make_pair(n,p));
-           // cout <<"n:"<< n << ":" << p << endl;
+            cout <<"n:"<< n << ":" << p << endl;
         }
         lastN = n;
+        
     }
-
+    */
     double wnt =0;
     double fwt =0;
-    cout << "last:" << lastN << endl;
-    cout << findfactorial(lastN)<<endl;
+    //cout << "last:" << lastN << endl;
+    double outsideTerm = exp(-1*(lamdaw + mus)*distrition_time);
+    double sumErlang = 0;
+    cout << "outsideTerm:" << outsideTerm <<endl;
+    for(int j=1;j<=n;j++)
+    {
+        double upperterm = pow((lamdaw + mus)*distrition_time,j);
+        long double lowerTerm = findfactorial(j);
+        double rr = upperterm/lowerTerm;
+        cout <<"n:"<< j <<":upperterm:"<<upperterm<<":lowerTerm:" <<lowerTerm << ": Product:" << rr <<endl;
+        sumErlang+= (upperterm/lowerTerm);
+        //cout << "sumErlang:" << sumErlang<<endl;
+    }
+    cout << "sumErlang:"<<sumErlang<<endl; 
+    wnt = outsideTerm*sumErlang;
+    cout << "wnt:"<<wnt<<endl;
+    double sumReP = 0;
+    for(int i=1;i<=n;i++)
+    {
+        cout << "recordP"<<i<<":" << recordP[i] <<endl;
+        sumReP+=recordP[i];   
+    }
+    cout <<"sumReP:"<<sumReP<<endl;
+    fwt = sumReP*wnt;
+    //cout << findfactorial(lastN)<<endl;
+    /*
     for(int t=0;t<=distrition_time;t++)
     {
         double ti = t;
@@ -243,12 +305,12 @@ int main(int argc, char *argv[])
             //cout << "p:" << p <<endl;
             fwt += (wnt*recordP[i]);
         }
-    }
+    }*/
     cout << "f(tw<="<<distrition_time<<")="<<fwt<<endl; 
     //cout << "summ:"<<summ <<endl;
 
 
-
+/*
     ofstream outfile;
     outfile.open("cdf.txt",ios_base::app);
 
@@ -259,7 +321,7 @@ int main(int argc, char *argv[])
 	outfile << content <<"\n"; 
  	outfile.close();
     cout << "Distribution are written in Text file" <<endl;
-
+*/
 
     // Print Report
 
