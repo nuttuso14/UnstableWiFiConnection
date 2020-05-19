@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
     double et0 = 150;
     double etw = 150;
     double et1 = 50;
-    double et2 = 50;
-
+    double et2 = 100;
+    
 
     /*
     int Nsim = atoi(argv[1]);
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     for(int i=0;i<Nsim;i++)
     {
         double tsi = ts[i];
-       // cout << "ts:" << tsi << endl;
+        //cout << "ts:" << tsi << endl;
         do
         {
 
@@ -119,19 +119,19 @@ int main(int argc, char *argv[])
                 {
                     t0 = GenExpo(et0);
                 }
-               // cout << "t0:"<<t0 <<endl;
+                //cout << "t0:"<<t0 <<endl;
                 tsi -=t0;
                 if(tsi<0)
                 {
                     tnext = tsi*(-1);
                     use_laststatus = 1;
-                    //cout << "tnext :" << tnext <<endl;
+                   // cout << "tnext :" << tnext <<endl;
                 }
                 else
                 { // wifistage changed
                     double p1 = gamma2/(gamma1+gamma2);
                     double p2 = gamma1/(gamma1+gamma2);
-
+                    /*
                     double choose_t1 = GenExpo(1/(p1*lamda0));
                     double choose_t2 = GenExpo(1/(p2*lamda0));
                     if(choose_t1<choose_t2)
@@ -143,6 +143,11 @@ int main(int argc, char *argv[])
                         wifistatus =2;
                     }
                     use_laststatus = 0;
+                    */
+                    double pl[2] = {p1,p2};
+                    wifistatus = (getWifiStatus(pl,2))+1;
+                    use_laststatus = 0;
+
                 }
             }
             else
@@ -174,7 +179,7 @@ int main(int argc, char *argv[])
                           //  cout << "ts:"<<ts[i]<<","<< "t1:" << t1 <<endl; 
                             tnext = tsi*(-1);
                             use_laststatus = 1;
-                            //cout << "tnext :" << tnext <<endl;
+                           // cout << "tnext :" << tnext <<endl;
                         }
                         else
                         {
