@@ -319,6 +319,7 @@ int main(int argc, char *argv[])
     double summ =0;
    // ofstream outfile;
     //outfile.open("distribution40_t1.txt",ios_base::app);
+    cout << "f1:" << f1 << ":f2=" <<f2 <<endl; 
 
 	string content;
 
@@ -326,7 +327,10 @@ int main(int argc, char *argv[])
     for (map<int, double>::iterator it = countP.begin(); it != countP.end(); ++it) 
     {
         int n = it->first;
-        double p = ((P0*a01)+P1+(P2*a21))*pow(f1,n-1);
+        double firstthing = ((P0*a01)+P1+(P2*a21));
+        double  secondthing= pow(f1,n-1);
+        double p = firstthing*secondthing;
+        cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT1;
