@@ -82,8 +82,10 @@ int main(int argc, char *argv[])
     vector<double> ts; 
     map<int, double> countP; 
     map<int, double> countP2; 
-
-    double plist[3] = {et0/(et0+et1+et2),et1/(et0+et1+et2),et2/(et0+et1+et2)};
+    double iP0 = et0/(et0+et1+et2); 
+    double iq1 = et1/(et1+et2);
+    double plist[3] = {iP0,iq1*(1-iP0),(1-iq1)*(1-iP0)};
+    cout << "Plist = "<< plist[0] + plist[1] + plist[2] << endl; 
 
     for(int i=0;i<Nsim;i++)
     {
@@ -311,6 +313,16 @@ int main(int argc, char *argv[])
     double a12 = ((P02*P10)+P12)/(1-(P10*P01));
     double a02 = P02 + (P01)*a12;
    
+    cout << "P0="<< P0 <<":P1=" << P1 <<":P2=" << P2 <<endl;
+    cout << "P01="<< P01 <<":P02=" << P02 <<":P0T=" << P0T <<endl;
+    cout << "P10="<< P10 <<":P12=" << P12 <<":P1T=" << P1T <<endl;
+    cout << "P20="<< P20 <<":P21=" << P21 <<":P2T=" << P2T <<endl;
+    //cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
+
+    cout << "P[n=0]=" << P0+P2 << endl;
+    cout << "P[n=1]=" << (P0*P01)+(P1)+(P2*P21)  << endl;
+    cout << "P[n=1]=" << (P0*P01*P1T)+(P1*P1T)+(P2*P21*P1T) + (P0*P02*P21*P1T) + (P2*P20*P01*P1T)  << endl;
+    //cout << "P[n=2]=" << (P0*P01)+(P1)+(P2*P21) << endl;
 
     // set up f
     double f1 = P10*(P01+(P02*(a21)))+ P12*a21;
@@ -319,7 +331,7 @@ int main(int argc, char *argv[])
     double summ =0;
    // ofstream outfile;
     //outfile.open("distribution40_t1.txt",ios_base::app);
-    cout << "f1:" << f1 << ":f2=" <<f2 <<endl; 
+    //cout << "f1:" << f1 << ":f2=" <<f2 <<endl; 
 
 	string content;
 
@@ -330,7 +342,7 @@ int main(int argc, char *argv[])
         double firstthing = ((P0*a01)+P1+(P2*a21));
         double  secondthing= pow(f1,n-1);
         double p = firstthing*secondthing;
-        cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
+        //cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT1;
@@ -359,11 +371,7 @@ int main(int argc, char *argv[])
    // outfile << content <<"\n"; 
    // outfile.close();
 
-    //cout << P0 <<":" << P1 <<":" << P2 <<endl;
-    //cout << P01 <<":" << P02 <<":" << P0T <<endl;
-    //cout << P10 <<":" << P12 <<":" << P1T <<endl;
-    //cout << P20 <<":" << P21 <<":" << P2T <<endl;
-    //cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
+
   /*
     double summ =0;
     ofstream outfile;
