@@ -317,11 +317,12 @@ int main(int argc, char *argv[])
     cout << "P01="<< P01 <<":P02=" << P02 <<":P0T=" << P0T <<endl;
     cout << "P10="<< P10 <<":P12=" << P12 <<":P1T=" << P1T <<endl;
     cout << "P20="<< P20 <<":P21=" << P21 <<":P2T=" << P2T <<endl;
-    //cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
+    cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
 
     cout << "P[n=0]=" << P0+P2 << endl;
-    cout << "P[n=1]=" << (P0*P01)+(P1)+(P2*P21)  << endl;
+    cout << "P[n=1]=" << ((0.33333*P0)+(P1)+(0.33333*P2))  << endl;
     cout << "P[n=1]=" << (P0*P01*P1T)+(P1*P1T)+(P2*P21*P1T) + (P0*P02*P21*P1T) + (P2*P20*P01*P1T)  << endl;
+    cout << "P[n=1]=" << (P0*(P01+P02*P21)) + P1 + (P2*(P21+P20*P01)) << endl;
     //cout << "P[n=2]=" << (P0*P01)+(P1)+(P2*P21) << endl;
 
     // set up f
@@ -341,7 +342,7 @@ int main(int argc, char *argv[])
         int n = it->first;
         double firstthing = ((P0*a01)+P1+(P2*a21));
         double  secondthing= pow(f1,n-1);
-        double p = firstthing*secondthing;
+        double p = (firstthing*secondthing)*1;
         //cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
@@ -360,7 +361,7 @@ int main(int argc, char *argv[])
     for (map<int, double>::iterator it = countP2.begin(); it != countP2.end(); ++it) 
     {
         int n = it->first;
-        double p = ((P0*a02)+(P1*a12)+P2)*pow(f2,n-1);
+        double p = (((P0*a02)+(P1*a12)+P2)*pow(f2,n-1));
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT2;
