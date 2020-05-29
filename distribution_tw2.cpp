@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     int Nsim = 50000;
     double ets = 1800;
     double et0 = 150;
-    double etw = 150;
+    double etw = 500;
     double et1 = 50;
     double et2 = 100;
     

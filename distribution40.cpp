@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                 { // wifistage changed
                     double p1 = gamma2/(gamma1+gamma2);
                     double p2 = gamma1/(gamma1+gamma2);
-                    /*
+                    
                     double choose_t1 = GenExpo(1/(p1*lamda0));
                     double choose_t2 = GenExpo(1/(p2*lamda0));
                     if(choose_t1<choose_t2)
@@ -145,10 +145,10 @@ int main(int argc, char *argv[])
                         wifistatus =2;
                     }
                     use_laststatus = 0;
-                    */
-                    double pl[2] = {p1,p2};
-                    wifistatus = (getWifiStatus(pl,2))+1;
-                    use_laststatus = 0;
+                    
+                    //double pl[2] = {p1,p2};
+                    //wifistatus = (getWifiStatus(pl,2))+1;
+                    //use_laststatus = 0;
 
                 }
             }
@@ -343,7 +343,7 @@ int main(int argc, char *argv[])
         double firstthing = ((P0*a01)+P1+(P2*a21));
         double  secondthing= pow(f1,n-1);
         double p = (firstthing*secondthing)*1;
-        //cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
+        cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT1;
