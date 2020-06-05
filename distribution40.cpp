@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}*/
 
-    int Nsim = 50000;
-    double ets = 1800;
+    int Nsim = 10000;
+    double ets = 500;
     double et0 = 150;
     double etw = 150;
     double et1 = 50;
@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
     double gamma1 = 1/et1;
     double gamma2 = 1/et2;
     double lamdaw = 1/etw;
+    int wificount = 0;
+    int wificount2 = 0;
 
 
     //double ts[Nsim];
@@ -106,6 +108,8 @@ int main(int argc, char *argv[])
     for(int i=0;i<Nsim;i++)
     {
         double tsi = ts[i];
+        wificount = 0;
+        wificount2 = 0;
         //cout << "ts:" << tsi << endl;
         do
         {
@@ -133,7 +137,7 @@ int main(int argc, char *argv[])
                 { // wifistage changed
                     double p1 = gamma2/(gamma1+gamma2);
                     double p2 = gamma1/(gamma1+gamma2);
-                    
+                    /*
                     double choose_t1 = GenExpo(1/(p1*lamda0));
                     double choose_t2 = GenExpo(1/(p2*lamda0));
                     if(choose_t1<choose_t2)
@@ -144,18 +148,17 @@ int main(int argc, char *argv[])
                     {
                         wifistatus =2;
                     }
-                    use_laststatus = 0;
+                    use_laststatus = 0;*/
                     
-                    //double pl[2] = {p1,p2};
-                    //wifistatus = (getWifiStatus(pl,2))+1;
-                    //use_laststatus = 0;
+                    double pl[2] = {p1,p2};
+                    wifistatus = (getWifiStatus(pl,2))+1;
+                    use_laststatus = 0;
 
                 }
             }
             else
             {
-                int wificount = 0;
-                int wificount2 = 0;
+
                do
                {
                   // cout << "before :" << wifistatus << endl;
@@ -246,33 +249,33 @@ int main(int argc, char *argv[])
                     }
                     //cout << wifistatus << "," << use_laststatus << endl;
                }while(wifistatus!=0 &&  use_laststatus !=1);
-
-                if(countP.find(wificount)==countP.end()) // if there is no P[N=n]
-                {
-                    countP.insert(make_pair(wificount,1));
-                    countT1++;
-                }
-                else
-                {
-                    int wcount = countP[wificount];
-                    countP[wificount] = wcount+1;
-                    countT1++;           
-                } 
-
-                if(countP2.find(wificount2)==countP2.end()) // if there is no P[N=n]
-                {
-                    countP2.insert(make_pair(wificount2,1));
-                    countT2++;
-                }
-                else
-                {
-                    int wcount = countP2[wificount2];
-                    countP2[wificount2] = wcount+1;
-                    countT2++;
-                } 
             }
-  
+
         }while(tsi>0);
+        if(countP.find(wificount)==countP.end()) // if there is no P[N=n]
+        {
+            countP.insert(make_pair(wificount,1));
+            countT1++;
+        }
+        else
+        {
+            int wcount = countP[wificount];
+            countP[wificount] = wcount+1;
+            countT1++;           
+        } 
+
+        if(countP2.find(wificount2)==countP2.end()) // if there is no P[N=n]
+        {
+            countP2.insert(make_pair(wificount2,1));
+            countT2++;
+        }
+        else
+        {
+            int wcount = countP2[wificount2];
+            countP2[wificount2] = wcount+1;
+            countT2++;
+        } 
+        
     }
 
     
@@ -313,26 +316,27 @@ int main(int argc, char *argv[])
     double a12 = ((P02*P10)+P12)/(1-(P10*P01));
     double a02 = P02 + (P01)*a12;
    
-    cout << "P0="<< P0 <<":P1=" << P1 <<":P2=" << P2 <<endl;
-    cout << "P01="<< P01 <<":P02=" << P02 <<":P0T=" << P0T <<endl;
-    cout << "P10="<< P10 <<":P12=" << P12 <<":P1T=" << P1T <<endl;
-    cout << "P20="<< P20 <<":P21=" << P21 <<":P2T=" << P2T <<endl;
-    cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
+   cout << "P0="<< P0 <<":P1=" << P1 <<":P2=" << P2 <<endl;
+   cout << "P01="<< P01 <<":P02=" << P02 <<":P0T=" << P0T <<endl;
+   cout << "P10="<< P10 <<":P12=" << P12 <<":P1T=" << P1T <<endl;
+   cout << "P20="<< P20 <<":P21=" << P21 <<":P2T=" << P2T <<endl;
+   cout << a01 <<":" << a21 <<":" << a02 <<":" << a12 <<endl;
 
-    cout << "P[n=0]=" << P0+P2 << endl;
-    cout << "P[n=1]=" << ((0.33333*P0)+(P1)+(0.33333*P2))  << endl;
-    cout << "P[n=1]=" << (P0*P01*P1T)+(P1*P1T)+(P2*P21*P1T) + (P0*P02*P21*P1T) + (P2*P20*P01*P1T)  << endl;
-    cout << "P[n=1]=" << (P0*(P01+P02*P21)) + P1 + (P2*(P21+P20*P01)) << endl;
+   // cout << "P[n=0]=" << P0+P2 << endl;
+   // cout << "P[n=1]=" << ((0.33333*P0)+(P1)+(0.33333*P2))  << endl;
+   // cout << "P[n=1]=" << (P0*P01*P1T)+(P1*P1T)+(P2*P21*P1T) + (P0*P02*P21*P1T) + (P2*P20*P01*P1T)  << endl;
+   // cout << "P[n=1]=" << (P0*(P01+P02*P21)) + P1 + (P2*(P21+P20*P01)) << endl;
     //cout << "P[n=2]=" << (P0*P01)+(P1)+(P2*P21) << endl;
 
     // set up f
-    double f1 = P10*(P01+(P02*(a21)))+ P12*a21;
-    double f2 = P20*(P02+(P01*(a12)))+ P21*a12;
+    double f1 = P10*(a01)+ P12*a21;
+    double f2 = P20*(a02)+ P21*a12;
 
     double summ =0;
+    double summp1 =0;
    // ofstream outfile;
     //outfile.open("distribution40_t1.txt",ios_base::app);
-    //cout << "f1:" << f1 << ":f2=" <<f2 <<endl; 
+    cout << "f1:" << f1 << ":f2=" <<f2 <<endl; 
 
 	string content;
 
@@ -342,26 +346,36 @@ int main(int argc, char *argv[])
         int n = it->first;
         double firstthing = ((P0*a01)+P1+(P2*a21));
         double  secondthing= pow(f1,n-1);
-        double p = (firstthing*secondthing)*1;
-        cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
+        double p = (firstthing*secondthing)*(1-f1);
+        if(n==0)
+        {
+            p = (P0+P2)*(1-f1);
+            //p = (1-f1);
+        }
+        //cout <<"f1:" << f1<< " :n:" << n << ": firstthing:" <<firstthing << ": secondthing:" << secondthing << endl;
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT1;
         cout << setw(5) <<left << col1 << setprecision(4) << setw(15)<< right  << psim << setw(15) << setprecision(4)<< right << p <<endl;
         summ +=p;
-
+        summp1 +=psim;
        // content += to_string(Nsim)+ "," + to_string(ets) + "," + to_string(et0)+ "," + to_string(etw) + "," + to_string(et1) + "," + to_string(et2)  + ","+ to_string(n) \
                   + "," +  to_string(psim) + "," +  to_string(p) + "\n";
 
     }
     cout << "psum:"<< summ <<endl;
+    cout << "psump1:"<< summp1 <<endl;
     cout << "===== For State 2 ============" <<endl;
      double summ2 =0;
     cout <<setw(5) << "P[N=n]| " <<setw(15)<<" Simulation |" << setw(15) << " Math Analyisis |" <<endl;
     for (map<int, double>::iterator it = countP2.begin(); it != countP2.end(); ++it) 
     {
         int n = it->first;
-        double p = (((P0*a02)+(P1*a12)+P2)*pow(f2,n-1));
+        double p = (((P0*a02)+(P1*a12)+P2)*pow(f2,n-1))*(1-f2);
+        if(n==0)
+        {
+            p = (P0+P1)*(1-f2);
+        }
         cout << fixed;
         string col1 = "P[" + to_string(n) + "]";
         double psim = (it->second)/countT2;

@@ -38,6 +38,11 @@ download.o: download.cpp
 main.o:	main.cpp
 	$(CC) $(STANDARD) $(CFLAGS) -o $@ main.cpp 
 
+distribution_lw:  distribution_lw.o random.o
+	$(CC) -o $@ $? 
+
+distribution_lw.o: distribution_lw.cpp
+	$(CC) $(STANDARD) $(CFLAGS) -o $@ distribution_lw.cpp 	
 
 		
 #deadlineratio.o: deadlineratio.cpp
