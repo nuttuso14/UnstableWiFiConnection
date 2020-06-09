@@ -378,7 +378,7 @@ int main(int argc, char *argv[])
         //cout << col1 << ":" << n1  << ":" << psim <<endl;
         if(n==0)
         {
-            mp = st10*(1-f1);
+            mp = P0*(1-a01) + P2*(1-a21);
         }
         else
         {
@@ -397,7 +397,7 @@ int main(int argc, char *argv[])
         double psim = (double)n2/countT2;
         if(n==0)
         {
-            mp = st20*(1-f2);
+            mp = P0*(1-a02) + P1*(1-a12);
         }
         else
         {
