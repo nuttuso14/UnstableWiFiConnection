@@ -44,10 +44,10 @@ int getWifiStatus(double p1){
 int main(int argc, char *argv[]) 
 {
     
-    int Nsim = 100000;
-    double ets = 250;
-    double et0 = 50;
-    double et1 = 150;
+    int Nsim = 10000;
+    double ets = 600;
+    double et0 = 150;
+    double et1 = 300;
 
     double mus = 1/ets;
     double lamda0 = 1/et0; 
