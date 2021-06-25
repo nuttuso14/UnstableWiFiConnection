@@ -52,12 +52,12 @@ int getWifiStatus(double p[],int size){
 int main(int argc, char *argv[]) 
 {
     int Nsim = 100000;
-    double ets = 600;
-    double et0 = 150;
+    double ets = 400;
+    double et0 = 100;
     double etw = 300;
-    double et1 = 100;
-    double et2 = 150;
-
+    double et1 = 60;
+    double et2 = 240;
+    
     double mus = 1/ets;
     double lamda0 = 1/et0; 
     double gamma1 = 1/et1;
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     map<int, double> countP; 
     map<int, double> countP2; 
     map<int, double> countPAll; 
-    double P0 = et0/(et0+et1+et2); 
+    double P0 = et0/(et0+etw); 
     double q1 = et1/(et1+et2);
     double q2 = 1-q1;
     
@@ -395,6 +395,10 @@ int main(int argc, char *argv[])
         {
             pn0 = P0*(1-a01) + P2*(1-a21);
             mp = pn0;
+            /*
+            cout << "case 0" << endl;
+            cout << "pn0 :" << pn0 <<endl;
+            cout << "(1-st11)) :" << st11 <<endl;*/
         }
         else
         {
